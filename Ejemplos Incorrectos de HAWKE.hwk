@@ -1,0 +1,156 @@
+Ejemplos Incorrectos de HAWKE
+
+Error 1: Minúsculas (L02 - Error Léxico)
+abrir;           // ERROR: minúscula 'a'
+mover 90;        // ERROR: minúscula 'm'
+cerrar;          // ERROR: minúscula 'c'
+Mensaje de error esperado:
+
+[L02] Línea 1, Col 1: Palabra 'abrir' en minúsculas. HAWKE solo acepta MAYÚSCULAS.
+Solución: Escriba 'ABRIR' en lugar de 'abrir'
+
+
+
+
+Error 2: Falta punto y coma (S01 - Error Sintáctico)
+ABRIR          // ERROR: falta ';'
+MOVER 90
+CERRAR
+
+Mensaje de error esperado:
+[S01] Línea 2, Col 1: Se esperaba 'PUNTO_COMA', se encontró 'KW_MOVER'
+Solución: Revise la sintaxis del comando
+
+
+
+
+Error 3: Ángulo fuera de rango (M01 - Error Semántico)
+MOVER 200;         // ERROR: 200 > 180
+GIRAR DERECHA 190; // ERROR: 190 > 180
+MOVER -10;         // ERROR: -10 < 0
+
+Mensaje de error esperado:
+[M01] Línea 1, Col 7: Ángulo 200 fuera del rango permitido (0-180 grados)
+Solución: Use un valor entre 0 y 180 grados
+
+
+
+
+Error 4: Llave no balanceada (S02 - Error Sintáctico)
+REPETIR 3 {
+    ABRIR;
+    CERRAR;
+// ERROR: falta la llave de cierre '}'
+
+Mensaje de error esperado:
+[S02] Línea 4, Col 1: Se esperaba 'LLAVE_CER', se encontró 'FIN_DE_ARCHIVO'
+Solución: Revise la sintaxis del comando
+
+
+
+
+Error 5: Dirección inválida en GIRAR (S03 - Error Sintáctico)
+GIRAR ARRIBA 45;   // ERROR: "ARRIBA" no es IZQUIERDA ni DERECHA
+GIRAR 90;          // ERROR: falta dirección
+
+Mensaje de error esperado:
+[S03] Línea 1, Col 7: Se esperaba IZQUIERDA o DERECHA, se encontró 'ARRIBA'
+Solución: Use GIRAR IZQUIERDA <ángulo> o GIRAR DERECHA <ángulo>
+
+
+
+
+Error 6: Carácter ilegal (E001 - Error Léxico)
+ABRIR;@        // ERROR: '@' no pertenece al alfabeto
+MOVER 90#;     // ERROR: '#' no pertenece al alfabeto
+
+Mensaje de error esperado:
+[E001] Línea 1, Col 7: Caracter '@' no pertenece al alfabeto de HAWKE
+Solución: Elimine el carácter o revise la instrucción
+
+
+
+
+Error 7: Rutina no definida (M02 - Error Semántico)
+EJECUTAR SALUDO;   // ERROR: SALUDO nunca fue definido
+
+Mensaje de error esperado:
+[M02] Línea 1, Col 9: La rutina 'SALUDO' no está declarada
+Solución: Declare la rutina con: GUARDAR SALUDO { ... }
+
+
+
+
+Error 8: REPETIR sin número (S04 - Error Sintáctico)
+REPETIR {          // ERROR: falta el número de repeticiones
+    ABRIR;
+};
+
+Mensaje de error esperado:
+[S04] Línea 1, Col 8: Se esperaba 'NUMERO', se encontró 'LLAVE_ABR'
+Solución: Use REPETIR 3 { ... }
+
+
+
+
+Error 9: REPETIR con número negativo o cero (M05 - Error Semántico)
+REPETIR 0 {        // ERROR: debe ser mayor que 0
+    ABRIR;
+};
+
+Mensaje de error esperado:
+[M05] Línea 1, Col 9: El número de repeticiones debe ser mayor que 0
+Solución: Use REPETIR 1, REPETIR 2, etc.
+
+
+
+
+Error 10: Identificador inválido en GUARDAR (S04 - Error Sintáctico)
+GUARDAR 123 {      // ERROR: el nombre no puede empezar con número
+    ABRIR;
+};
+Mensaje de error esperado:
+[S04] Línea 1, Col 9: Se esperaba nombre de rutina, se encontró 'NUMERO'
+Solución: Use: GUARDAR NOMBRE_RUTINA { ... }
+
+
+
+
+Error 11: Velocidad no reconocida (M04 - Error Semántico)
+MOVER 90 SUPERRAPIDO;   // ERROR: "SUPERRAPIDO" no es válido
+
+Mensaje de error esperado:
+[M04] Línea 1, Col 10: Velocidad 'SUPERRAPIDO' no reconocida
+Solución: Use LENTO, NORMAL o RAPIDO
+
+
+
+
+Error 12: Múltiples errores (demostración de la pila)
+abrir;              // L02 - Minúsculas
+MOVER 200;          // M01 - Ángulo fuera de rango
+REPETIR 2 {         // Correcto
+    CERRAR          // S01 - Falta ';'
+}                   // Correcto
+GIRAR ATRAS 45;     // S03 - Dirección inválida
+EJECUTAR RARA;      // M02 - Rutina no existe
+
+Mensaje de error esperado (pila de errores):
+========================================================
+ERRORES ENCONTRADOS (5 errores)
+========================================================
+
+[1] [M02] Línea 6: La rutina 'RARA' no está declarada
+    Solución: Declare la rutina con GUARDAR RARA { ... }
+
+[2] [S03] Línea 5: Se esperaba IZQUIERDA o DERECHA, se encontró 'ATRAS'
+    Solución: Use GIRAR IZQUIERDA <ángulo> o GIRAR DERECHA <ángulo>
+
+[3] [S01] Línea 4: Se esperaba 'PUNTO_COMA', se encontró 'LLAVE_CER'
+    Solución: Revise la sintaxis del comando
+
+[4] [M01] Línea 2: Ángulo 200 fuera del rango permitido (0-180)
+    Solución: Use un valor entre 0 y 180 grados
+
+[5] [L02] Línea 1: Palabra 'abrir' en minúsculas
+    Solución: Escriba 'ABRIR' en lugar de 'abrir'

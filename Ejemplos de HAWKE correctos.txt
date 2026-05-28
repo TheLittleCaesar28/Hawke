@@ -1,0 +1,71 @@
+Ejemplos de HAWKE correctos: 
+
+
+Movimientos básicos. 
+ABRIR;
+ESPERAR 500;
+CERRAR;
+ESPERAR 500;
+ABRIR;
+
+
+Movimiento con velocidad. 
+MOVER 45 LENTO;
+ESPERAR 300;
+MOVER 90 RAPIDO;
+ESPERAR 300;
+MOVER 45 NORMAL;
+
+
+Giro de la base. 
+GIRAR IZQUIERDA 45;
+ESPERAR 500;
+GIRAR DERECHA 90;
+ESPERAR 500;
+GIRAR DERECHA 45;
+
+Usando REPETIR.
+REPETIR 3 {
+    ABRIR;
+    ESPERAR 200;
+    CERRAR;
+    ESPERAR 200;
+};
+
+
+Crear y ejecutar una rutina. 
+GUARDAR SALUDO {
+    MOVER 30 LENTO;
+    ABRIR;
+    ESPERAR 500;
+    CERRAR;
+    MOVER 0;
+};
+
+EJECUTAR SALUDO;
+ESPERAR 1000;
+EJECUTAR SALUDO;
+
+
+Programa completo. 
+// Este programa agarra un objeto, lo gira y lo suelta
+
+GUARDAR AGARRAR {
+    MOVER 30 LENTO;
+    CERRAR;
+    ESPERAR 500;
+    MOVER 90 RAPIDO;
+};
+
+GUARDAR SOLTAR {
+    MOVER 30 LENTO;
+    ABRIR;
+    ESPERAR 300;
+    MOVER 0;
+};
+
+EJECUTAR AGARRAR;
+GIRAR DERECHA 45;
+ESPERAR 1000;
+GIRAR IZQUIERDA 45;
+EJECUTAR SOLTAR;
